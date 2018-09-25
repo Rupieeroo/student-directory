@@ -4,7 +4,7 @@
 def interactive_menu
   loop do
     print_menu
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
 
@@ -46,14 +46,14 @@ def input_students
   until name == 'stop' do
   puts "Please enter the name of the student"
   puts "Enter 'stop' to finish student input"
-  name = gets.strip
+  name = STDIN.gets.strip
   if name == 'stop'
     @students.count -1
     break
   end
   #while the name is not empty, repeat this code
   puts "Please enter the cohort of the student"
-  cohort = gets.strip
+  cohort = STDIN.gets.strip
     if cohort.empty?
       cohort = :November
     end
@@ -83,13 +83,23 @@ def save_students
   file.close
 end
 
-def load_students
-  file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(',')
     @students << {name: name, cohort: cohort.to_sym}
   end
   file.close
+end
+
+def try_load_students
+  filename = ARGV.first #first argument of the command line
+  return if filename.nil? #get out of the method if it isn't given
+  if File.exists?(filename) #if it exists
+    load_students(filename)
+    puts "loaded #{@students.count} from #{filename}"
+    exit #quits the program
+  end
 end
 
 #next, we print them
