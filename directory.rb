@@ -12,8 +12,8 @@ end
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
+  puts "3. Save the list"
+  puts "4. Load the list"
   puts "9. Exit"
 end
 
@@ -33,7 +33,7 @@ def menu_selection(selection)
   when "3"
     save_students
   when "4"
-    load_students
+    load_student_question
   when "9"
     exit # This causes the program to terminate
   else
@@ -96,7 +96,6 @@ def save_students
         ]
         csv_line = student_data.join(",")
         file.puts csv_line
-        puts ""
         puts "students saved successfully"
         puts ""
       end
@@ -107,13 +106,23 @@ def save_students
   end
 end
 
+def load_student_question
+  puts "where would you like to load from?"
+  input = gets.chomp
+  if input == 'students.csv'
+    load_students
+  else
+    puts "File not found"
+    load_student_question
+  end
+end
+
 def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
     @name, @cohort, @country, @age = line.chomp.split(',')
     aquire_students
   end
-  puts ""
   puts "Students loaded successfully"
   puts ""
 end
