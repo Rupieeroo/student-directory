@@ -1,10 +1,11 @@
 #first we out the students into an array
+
 @students = []
 
 def interactive_menu
   loop do
     print_menu
-    process(STDIN.gets.chomp)
+    menu_selection(STDIN.gets.chomp)
   end
 end
 
@@ -23,7 +24,7 @@ def show_students
   print_footer
 end
 
-def process(selection)
+def menu_selection(selection)
   case selection
   when "1"
     input_students
@@ -40,65 +41,94 @@ def process(selection)
   end
 end
 
+def aquire_students
+  @students << {name: @name, cohort: @cohort, country: @country, age: @age}
+end
+
 def input_students
   #get the name
-  name =
-  until name == 'stop' do
+  @name =
+  until @name == 'stop' do
   puts "Please enter the name of the student"
   puts "Enter 'stop' to finish student input"
-  name = STDIN.gets.strip
-  if name == 'stop'
+  @name = STDIN.gets.strip
+  if @name == 'stop'
     @students.count -1
     break
   end
   #while the name is not empty, repeat this code
   puts "Please enter the cohort of the student"
-  cohort = STDIN.gets.strip
-    if cohort.empty?
-      cohort = :November
+  @cohort = STDIN.gets.strip
+    if @cohort.empty?
+      @cohort = :November
     end
   #while cohort is not empty, repeat this code
   puts "Please enter the country of origin of the student"
-  country = gets.strip
+  @country = gets.strip
   #while country is not empty, repeat this code
   puts "Please enter the age of the student"
-  age = gets.strip
+  @age = gets.strip
   #while age is not empty, repeat this code
     #add the student has to the array
-    @students << {name: name, cohort: cohort, country: country, age: age}
+    aquire_students
+    puts ""
+    puts "student added"
+    puts ""
   end
 
   @students
 end
 
 def save_students
+  puts "where would you like to save the file?"
+  input = gets.chomp
+  if input == 'students.csv'
   # Open the file for writing
-  file = File.open("students.csv", "w")
-  # iterate over the array of students
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+    file = File.open("students.csv", "w") do |file|
+
+      # iterate over the array of students
+      @students.each do |student|
+        student_data = [
+        student[:name],
+        student[:cohort],
+        student[:country],
+        student[:age]
+        ]
+        csv_line = student_data.join(",")
+        file.puts csv_line
+        puts ""
+        puts "students saved successfully"
+        puts ""
+      end
+    end
+  else
+    puts "File not found"
+    save_students
   end
-  file.close
 end
 
 def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
-    name, cohort = line.chomp.split(',')
-    @students << {name: name, cohort: cohort.to_sym}
+    @name, @cohort, @country, @age = line.chomp.split(',')
+    aquire_students
   end
-  file.close
+  puts ""
+  puts "Students loaded successfully"
+  puts ""
 end
 
 def try_load_students
-  filename = ARGV.first #first argument of the command line
-  return if filename.nil? #get out of the method if it isn't given
-  if File.exists?(filename) #if it exists
+  filename = ARGV.first
+  if filename.nil?
+    puts "Loading students.csv by default"
+    load_students
+  elsif File.exists?(filename)
     load_students(filename)
-    puts "loaded #{@students.count} from #{filename}"
-    exit #quits the program
+      puts "Loaded #{@students.count} from #{filename}"
+  else
+    puts "File not found. Loading students.csv by default"
+    load_students
   end
 end
 
@@ -160,4 +190,6 @@ def index_of_students(students)
   end
 end
 #finally we print the total number of students
+
+try_load_students
 interactive_menu
