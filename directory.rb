@@ -1,3 +1,4 @@
+require 'CSV'
 #first we out the students into an array
 
 @students = []
@@ -72,8 +73,7 @@ def input_students
     #add the student has to the array
     aquire_students
     puts ""
-    puts "student added"
-    puts ""
+    puts "student added\n"
   end
 
   @students
@@ -84,7 +84,7 @@ def save_students
   input = gets.chomp
   if input == 'students.csv'
   # Open the file for writing
-    file = File.open("students.csv", "w") do |file|
+    file = CSV.open("students.csv", "w") do |file|
 
       # iterate over the array of students
       @students.each do |student|
@@ -94,10 +94,8 @@ def save_students
         student[:country],
         student[:age]
         ]
-        csv_line = student_data.join(",")
-        file.puts csv_line
-        puts "students saved successfully"
-        puts ""
+        file << student_data
+        puts "students saved successfully\n"
       end
     end
   else
@@ -118,13 +116,14 @@ def load_student_question
 end
 
 def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    @name, @cohort, @country, @age = line.chomp.split(',')
+  #file = File.open(filename, "r")
+
+  CSV.foreach("./students.csv") do |row|
+    @name, @cohort, @country, @age = row
     aquire_students
   end
-  puts "Students loaded successfully"
-  puts ""
+
+  puts "Students loaded successfully\n"
 end
 
 def try_load_students
@@ -176,7 +175,7 @@ def group_by_cohort
   end
 
   group_by_cohort.each do |cohort, students|
-    puts " "
+    puts ""
     puts "#{cohort} cohort: ".center(40)
     students.each.with_index(1) do |name, index|
       puts  "#{index}. #{name}".center(40)
