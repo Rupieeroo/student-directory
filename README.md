@@ -2,7 +2,7 @@
 
 The student directory script allows you to manage the list of students enrolled at Villains Academy.
 
-Working through the Makers Academy Pre-course, the directory.rb file started as a list of students who were enrolled and gradually evolved step-by-step into an interactive directory, allowing the user to input student's names, their cohort, country of origin and age. These can then be loaded back again from the interactive menu. 
+Working through the Makers Academy Pre-course, the directory.rb file started as a list of students who were enrolled and gradually evolved step-by-step into an interactive directory, allowing the user to input student's names, their cohort, country of origin and age. These can then be loaded back again from the interactive menu.
 
 ## How to use ##
 
@@ -26,7 +26,7 @@ Outputs a list of students  in the order they were input, followed by the studen
                 1. Mark
              -------------
     Overall, we have 1 great student
-    
+
 ### 3. Save the list ###
 Saves the students that have been added during the instance to the students.csv file or, in theory, any other file that is given as an argument, adding them to the directory for calling upon later.
 
@@ -35,3 +35,11 @@ Loads the students that have been added previously to the students.csv file or, 
 
 ### 9. Exit ###
 Exits the program instance and takes you back to the command line.
+
+## Other Files ##
+
+### Errorfix_directory.rb ###
+A challenge provided by Makers Academy, the code was fixed while using plain text instead of Ruby grammer.
+
+### quine.rb ###
+A challenge provided by Makers Academy, this file outputs its own source code in the simplest fashion I could fathom.
