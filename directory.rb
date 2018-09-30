@@ -1,8 +1,9 @@
 require 'CSV'
-#first we out the students into an array
 
+# First we out the students into an array
 @students = []
 
+# Method for looping through the interactive menu
 def interactive_menu
   loop do
     print_menu
@@ -10,6 +11,7 @@ def interactive_menu
   end
 end
 
+# Method printing the menu options
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
@@ -18,6 +20,8 @@ def print_menu
   puts "9. Exit"
 end
 
+# Method outputting all the print methods for the students
+# when called
 def show_students
   print_header
   print_students_list
@@ -25,6 +29,7 @@ def show_students
   print_footer
 end
 
+# Method defining the user input for the interactive menu
 def menu_selection(selection)
   case selection
   when "1"
@@ -42,12 +47,15 @@ def menu_selection(selection)
   end
 end
 
+# Method for adding user input to the @students array
 def aquire_students
   @students << {name: @name, cohort: @cohort, country: @country, age: @age}
 end
 
+# Method allowing the user to input the student data
+# as requested
 def input_students
-  #get the name
+  # gets the name
   @name =
   until @name == 'stop' do
   puts "Please enter the name of the student"
@@ -57,21 +65,22 @@ def input_students
     @students.count -1
     break
   end
-  #while the name is not empty, repeat this code
+  # gets the cohort
   puts "Please enter the cohort of the student"
   @cohort = STDIN.gets.strip
     if @cohort.empty?
       @cohort = :November
     end
   #while cohort is not empty, repeat this code
+  # below code gets the country of origin
   puts "Please enter the country of origin of the student"
   @country = gets.strip
-  #while country is not empty, repeat this code
+  # below code gets the age of student
   puts "Please enter the age of the student"
   @age = gets.strip
-  #while age is not empty, repeat this code
-    #add the student has to the array
+    # calls the aquire_students method
     aquire_students
+    # the "" is to add a line space, making the output more readable
     puts ""
     puts "student added\n"
   end
@@ -79,6 +88,8 @@ def input_students
   @students
 end
 
+# Method for saving the students to the students csv file
+# (or potentially other files)
 def save_students
   puts "where would you like to save the file?"
   input = gets.chomp
@@ -104,6 +115,8 @@ def save_students
   end
 end
 
+# Method used to find out where the user
+# wants to load the students from
 def load_student_question
   puts "where would you like to load from?"
   input = gets.chomp
@@ -115,8 +128,9 @@ def load_student_question
   end
 end
 
+# Method for loading from the students csv file
+# (or potentially other files)
 def load_students(filename = "students.csv")
-  #file = File.open(filename, "r")
 
   CSV.foreach("./students.csv") do |row|
     @name, @cohort, @country, @age = row
@@ -126,6 +140,8 @@ def load_students(filename = "students.csv")
   puts "Students loaded successfully\n"
 end
 
+# Method for finding out if a user can load from that file
+# also auto-loads the students.csv file in case of no input
 def try_load_students
   filename = ARGV.first
   if filename.nil?
@@ -140,7 +156,8 @@ def try_load_students
   end
 end
 
-#next, we print them
+# The 'print' methods are here to print various aspects of the code
+# when called upon
 def print_header
   puts "The students of Villains Academy".center(40)
   puts "-------------".center(40)
@@ -160,6 +177,7 @@ until count == @students.count
  end
 end
 
+# This prints the students grouped by cohort
 def group_by_cohort
   group_by_cohort = {}
 
@@ -192,12 +210,14 @@ def print_footer
   end
 end
 
+# This collects and outputs the total number of students
 def index_of_students(students)
   students.each_with_index do |value, index|
     puts "#{index}: #{value}"
   end
 end
-#finally we print the total number of students
 
+# calls the auto-load file
 try_load_students
+# calls the interactive menu
 interactive_menu
